@@ -1,4 +1,14 @@
 
+export const PPI = 25;
+export const RACK_UNIT_COUNT = 42;
+export const RACK_UNIT_HEIGHT = 1.75 * PPI;
+export const RACK_WIDTH_PX = 23.5 * PPI;
+export const RACK_FRAME_PAD_TOP = 52;
+export const RACK_FRAME_PAD_BOTTOM = 53;
+export const RACK_CONTENT_HEIGHT = RACK_UNIT_COUNT * RACK_UNIT_HEIGHT;
+// Total height = content + padding, ensuring perfect alignment
+export const RACK_TOTAL_HEIGHT_PX = RACK_CONTENT_HEIGHT + RACK_FRAME_PAD_TOP + RACK_FRAME_PAD_BOTTOM;
+
 export const CABLE_TYPES = {
     XLR: { color: '#ef4444', label: 'XLR Audio', width: 4 },
     HDMI: { color: '#3b82f6', label: 'HDMI Video', width: 6 },
@@ -17,14 +27,14 @@ export const INITIAL_LIBRARY = [
     {
         type: 'switch_ui', name: 'UniFi Pro Max 48 PoE', uHeight: 1, width: 1, category: 'gear', subcat: 'Network',
         style: USW_STYLE,
-        images: { back: '/assets/Unifi-Rear.png' },
+        images: { back: 'assets/Unifi-Rear.png' },
         inputs: [],
         outputs: []
     },
     {
         type: 'pdu', name: 'Rack PDU 6-Outlet', uHeight: 1, width: 1, category: 'gear', subcat: 'Power',
         style: USW_STYLE,
-        images: { front: '/assets/pdu_front.png' },
+        images: { front: 'assets/pdu_front.png' },
         inputs: [],
         outputs: [
             { id: 'pdu-out-1', label: 'Outlet 1', type: 'POWER' },
@@ -39,28 +49,21 @@ export const INITIAL_LIBRARY = [
     {
         type: 'wiim', name: 'WiiM Pro', uHeight: 1, width: 0.33, category: 'gear', subcat: 'Source',
         style: USW_STYLE,
-        images: { front: '/assets/Wiim_Front.png', back: '/assets/Wiim_Rear.png' },
+        images: { front: 'assets/Wiim_Front.png', back: 'assets/Wiim_Rear.png' },
         inputs: [],
         outputs: []
     },
     {
         type: 'bluesound', name: 'Bluesound NODE', uHeight: 1, width: 0.5, category: 'gear', subcat: 'Source',
         style: USW_STYLE,
-        images: { front: '/assets/bluesound_front.png', back: '/assets/bluesound_rear.png' },
+        images: { front: 'assets/bluesound_front.png', back: 'assets/bluesound_rear.png' },
         inputs: [],
         outputs: []
     },
     {
         type: 'appletv', name: 'Apple TV 4K', uHeight: 1, width: 0.25, category: 'gear', subcat: 'Source',
         style: USW_STYLE,
-        images: { back: '/assets/appletv_rear.png' },
-        inputs: [],
-        outputs: []
-    },
-    {
-        type: 'kaleidescape_mini_terra', name: 'Kaleidescape Mini Terra Prime', uHeight: 1, width: 0.5, category: 'gear', subcat: 'Source',
-        style: USW_STYLE,
-        images: { front: '/assets/kaleidescape-mini-terra-front.png', back: '/assets/kaleidescape-mini-terra-rear.png' },
+        images: { back: 'assets/appletv_rear.png' },
         inputs: [],
         outputs: []
     },
@@ -79,73 +82,66 @@ export const INITIAL_LIBRARY = [
         inputs: [],
         outputs: []
     },
-    {
-        type: 'shure_slxd4', name: 'Shure SLXD4', uHeight: 1, width: 0.5, category: 'gear', subcat: 'Audio',
-        style: USW_STYLE,
-        images: { front: '/assets/shure-slxd4-front.png', back: '/assets/shure-slxd4-rear.png' },
-        inputs: [],
-        outputs: []
-    },
     // --- GEAR: Amplification (1U) ---
     {
         type: 'origin_proa125_1', name: 'Origin PROA125.1', uHeight: 1, width: 0.5, category: 'gear', subcat: 'Amp',
         style: USW_STYLE,
-        images: { front: '/assets/PROA125-1.png' },
+        images: { front: 'assets/PROA125-1.png' },
         inputs: [], outputs: []
     },
     {
         type: 'origin_proa125_2', name: 'Origin PROA125.2', uHeight: 1, width: 0.5, category: 'gear', subcat: 'Amp',
         style: USW_STYLE,
-        images: { front: '/assets/PROA125-2.png' },
+        images: { front: 'assets/PROA125-2.png' },
         inputs: [], outputs: []
     },
     {
         type: 'origin_proa125_4', name: 'Origin PROA125.4', uHeight: 1, width: 0.5, category: 'gear', subcat: 'Amp',
         style: USW_STYLE,
-        images: { front: '/assets/PROA-125-4.png' },
+        images: { front: 'assets/PROA-125-4.png' },
         inputs: [], outputs: []
     },
     {
         type: 'origin_proa250_1', name: 'Origin PROA250.1', uHeight: 1, width: 0.5, category: 'gear', subcat: 'Amp',
         style: USW_STYLE,
-        images: { front: '/assets/PROA 250-1.png' },
+        images: { front: 'assets/PROA 250-1.png' },
         inputs: [], outputs: []
     },
     {
         type: 'origin_proa250_2', name: 'Origin PROA250.2', uHeight: 1, width: 0.5, category: 'gear', subcat: 'Amp',
         style: USW_STYLE,
-        images: { front: '/assets/PROA-250-2.png', back: '/assets/PROA-250-2R.png' },
+        images: { front: 'assets/PROA-250-2.png', back: 'assets/PROA-250-2R.png' },
         inputs: [], outputs: []
     },
     // --- GEAR: Amplification (2U) ---
     {
         type: 'origin_proa1000_1', name: 'Origin PROA1000.1', uHeight: 2, width: 1, category: 'gear', subcat: 'Amp',
         style: USW_STYLE,
-        images: { front: '/assets/PROA1000-1_2.png', back: '/assets/Origin_ProAmp_2U_Rear.png' },
+        images: { front: 'assets/PROA1000-1_2.png', back: 'assets/Origin_ProAmp_2U_Rear.png' },
         inputs: [], outputs: []
     },
     {
         type: 'origin_proa1000_2', name: 'Origin PROA1000.2', uHeight: 2, width: 1, category: 'gear', subcat: 'Amp',
         style: USW_STYLE,
-        images: { front: '/assets/PROA_1000-2.png', back: '/assets/Origin_ProAmp_2U_Rear.png' },
+        images: { front: 'assets/PROA_1000-2.png', back: 'assets/Origin_ProAmp_2U_Rear.png' },
         inputs: [], outputs: []
     },
     {
         type: 'origin_proa1200_1', name: 'Origin PROA1200.1', uHeight: 2, width: 1, category: 'gear', subcat: 'Amp',
         style: USW_STYLE,
-        images: { front: '/assets/PROA1200-1.png', back: '/assets/Origin_ProAmp_2U_Rear.png' },
+        images: { front: 'assets/PROA1200-1.png', back: 'assets/Origin_ProAmp_2U_Rear.png' },
         inputs: [], outputs: []
     },
     {
         type: 'origin_proa1200_2', name: 'Origin PROA1200.2', uHeight: 2, width: 1, category: 'gear', subcat: 'Amp',
         style: USW_STYLE,
-        images: { front: '/assets/PROA_1200-2.png', back: '/assets/Origin_ProAmp_2U_Rear.png' },
+        images: { front: 'assets/PROA_1200-2.png', back: 'assets/Origin_ProAmp_2U_Rear.png' },
         inputs: [], outputs: []
     },
     {
         type: 'origin_proa1200_4', name: 'Origin PROA1200.4', uHeight: 2, width: 1, category: 'gear', subcat: 'Amp',
         style: USW_STYLE,
-        images: { front: '/assets/PROA-1200-4.png', back: '/assets/Origin_ProAmp_2U_Rear.png' },
+        images: { front: 'assets/PROA-1200-4.png', back: 'assets/Origin_ProAmp_2U_Rear.png' },
         inputs: [], outputs: []
     },
     // --- ACCESSORIES ---

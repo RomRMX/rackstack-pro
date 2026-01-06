@@ -4,11 +4,111 @@
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  color-scheme: dark;
+
+  /* Dark Theme Variables */
+  --bg-main: #0a0a0a;
+  --bg-sidebar: #111;
+  --bg-panel: #141414;
+  --border-color: #222;
+  --text-primary: #e5e5e5;
+  --text-secondary: #a3a3a3;
+  --accent-blue: #3b82f6;
+  --accent-orange: #f97316;
 }
 
 body {
   margin: 0;
-  background-color: #09090b; /* Zinc 950 */
-  color: #e4e4e7; /* Zinc 200 */
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-sidebar);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #444;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+/* --- PRINT / EXPORT STYLES (Bluebeam-style) --- */
+@media print {
+  @page {
+    size: landscape;
+    margin: 0;
+  }
+
+  /* Hide UI Chrome */
+  .no-print,
+  button,
+  input,
+  /* Hide inputs if possible, or style them as text */
+  .shrink-0,
+  /* Usually sidebar */
+  .fixed,
+  /* Fixed headers */
+  .z-50,
+  /* Top bar usually */
+  .z-20
+
+  /* Sidebar usually */
+    {
+    display: none !important;
+  }
+
+  /* Re-show specific content if hidden by generic classes */
+  /* We need to selectively hide the Sidebar and Top Bar */
+
+  /* HACK: Hide the Sidebar Column */
+  body>div>div:first-child {
+    display: none !important;
+  }
+
+  /* HACK: Hide the Top Controls Row */
+  body>div>div:nth-child(2)>div:first-child {
+    display: none !important;
+  }
+
+  /* SHOW The Main Rack Container */
+  body {
+    background-color: white !important;
+    color: black !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Force background colors on racks */
+  div {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }

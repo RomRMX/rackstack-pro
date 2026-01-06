@@ -1,35 +1,32 @@
-import React, { useState } from 'react';
-import { Server, Settings } from 'lucide-react';
+import React from 'react';
+import { Radio } from 'lucide-react';
 
-const MainLayout = ({ sidebar, children }) => {
+export default function MainLayout({ sidebar, topBar, children }) {
     return (
-        <div className="flex h-screen bg-[#09090b] text-zinc-100 font-sans overflow-hidden">
+        <div className="flex h-screen w-full bg-[var(--bg-main)] text-[var(--text-primary)] overflow-hidden font-sans select-none relative transition-colors duration-300">
             {/* Sidebar */}
-            <aside className="w-80 flex-none border-r border-[#27272a] bg-[#18181b] flex flex-col">
-                <div className="h-14 px-4 border-b border-[#27272a] flex items-center gap-2">
-                    <div className="p-1.5 bg-blue-600 rounded-md">
-                        <Server size={18} className="text-white" />
+            <div className="w-80 bg-[var(--bg-sidebar)] border-r border-[var(--border-color)] flex flex-col z-20 shrink-0 transition-colors duration-300" onClick={e => e.stopPropagation()}>
+                <div className="h-[72px] px-4 border-b border-[var(--border-color)] flex justify-between items-center flex-none">
+                    <div>
+                        <h1 className="font-bold text-[var(--text-primary)] tracking-widest uppercase flex items-center gap-2">
+                            <Radio size={20} className="text-orange-600" /> RACKSTACK PRO <span className="text-[10px] text-gray-600 ml-1">BY RMXLABS</span>
+                        </h1>
+                        <p className="text-[10px] text-gray-500 mt-1">Virtual Layout & Cabling</p>
                     </div>
-                    <span className="font-bold text-sm tracking-wide text-zinc-100">RACKSTACK2</span>
-                    <span className="text-[10px] px-1.5 py-0.5 bg-[#27272a] text-zinc-400 rounded-full border border-[#3f3f46]">v2.0</span>
                 </div>
+                {/* Dynamic Sidebar Content */}
+                {sidebar}
+            </div>
 
-                <div className="flex-1 overflow-hidden flex flex-col">
-                    {sidebar}
+            {/* Main Content Area */}
+            <div className="flex-1 flex flex-col min-w-0 bg-[var(--bg-main)] relative z-0">
+                {/* Optional TopBar area if needed later */}
+                {topBar && <div className="h-12 border-b border-[var(--border-color)] flex items-center px-4 bg-[var(--bg-panel)]">{topBar}</div>}
+
+                <div className="flex-1 overflow-hidden relative">
+                    {children}
                 </div>
-
-                <div className="h-10 border-t border-[#27272a] flex items-center px-4 justify-between bg-[#09090b]">
-                    <span className="text-[10px] text-zinc-500">© 2026 Antigravity</span>
-                    <Settings size={14} className="text-zinc-500 hover:text-zinc-300 cursor-pointer" />
-                </div>
-            </aside>
-
-            {/* Main Content */}
-            <main className="flex-1 flex flex-col relative overflow-hidden bg-zinc-950">
-                {children}
-            </main>
+            </div>
         </div>
     );
-};
-
-export default MainLayout;
+}
