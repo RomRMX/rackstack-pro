@@ -154,7 +154,7 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
 
     return (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[3000] backdrop-blur-md">
-            <div className="bg-[#111] w-[1000px] h-[55vh] flex flex-col rounded-xl border border-[#333] shadow-2xl overflow-hidden">
+            <div className="bg-[#111] w-[1100px] h-[75vh] flex flex-col rounded-xl border border-[#333] shadow-2xl overflow-hidden">
                 <div className="p-4 border-b border-[#222] flex justify-between items-center bg-[#0a0a0a] shrink-0">
                     <h2 className="text-sm font-bold text-white flex items-center gap-2"><Settings size={16} className="text-blue-500" /> Editing: {data.name}</h2>
                     <div className="flex gap-2">
@@ -169,9 +169,11 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
                     ))}
                 </div>
 
+                {/* Main content area: Image + Device Settings */}
                 <div className="flex-1 flex overflow-hidden">
-                    <div className="flex-1 bg-[#0a0a0a] relative flex flex-col items-center justify-center p-8 overflow-auto">
-                        <div className="mb-4 text-xs text-gray-500">
+                    {/* Left: Image Preview */}
+                    <div className="flex-1 bg-[#0a0a0a] relative flex flex-col items-center justify-center p-6 overflow-auto">
+                        <div className="mb-2 text-xs text-gray-500">
                             Proportional Rack View ({data.width * 100}% Width, {data.uHeight}U Height)
                         </div>
 
@@ -179,8 +181,8 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
                             ref={imageRef}
                             className="relative shadow-2xl border border-[#333] bg-[#1a1a1a] transition-all"
                             style={{
-                                width: `${containerWidth}px`,
-                                height: `${containerHeight}px`
+                                width: `${containerWidth * 0.8}px`,
+                                height: `${containerHeight * 0.8}px`
                             }}
                             onDragOver={e => e.preventDefault()}
                             onDrop={handleDrop}
@@ -224,7 +226,7 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
                             })}
                         </div>
 
-                        <div className="mt-6 flex gap-3">
+                        <div className="mt-4 flex gap-3">
                             <label className="px-4 py-2 bg-[#222] hover:bg-[#333] text-gray-300 rounded text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors">
                                 <Upload size={14} /> Upload Image
                                 <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e, activeTab)} />
@@ -240,9 +242,9 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
                         </div>
                     </div>
 
-                    <div className="w-80 bg-[#1a1a1a] border-l border-[#333] flex flex-col z-10 h-full">
-                        {/* FIXED HEIGHT SETTINGS PANEL */}
-                        <div className="p-4 bg-[#111] border-b border-[#222] flex flex-col gap-3 shrink-0">
+                    {/* Right: Device Settings */}
+                    <div className="w-72 bg-[#1a1a1a] border-l border-[#333] flex flex-col z-10 overflow-y-auto">
+                        <div className="p-4 bg-[#111] border-b border-[#222] flex flex-col gap-3">
                             <h3 className="text-xs font-bold text-gray-400 uppercase">Device Settings</h3>
                             <div className="grid grid-cols-2 gap-3">
                                 <div className="col-span-2">
@@ -283,11 +285,11 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
                                                 value={newCategoryName}
                                                 onChange={(e) => setNewCategoryName(e.target.value)}
                                                 onKeyDown={(e) => e.key === 'Enter' && handleAddCategory()}
-                                                placeholder="New category name..."
+                                                placeholder="New category..."
                                                 autoFocus
                                             />
                                             <button onClick={handleAddCategory} className="px-2 py-1 bg-blue-600 text-white rounded text-xs">Add</button>
-                                            <button onClick={() => { setShowAddCategory(false); setNewCategoryName(''); }} className="px-2 py-1 bg-[#333] text-gray-300 rounded text-xs">Cancel</button>
+                                            <button onClick={() => { setShowAddCategory(false); setNewCategoryName(''); }} className="px-2 py-1 bg-[#333] text-gray-300 rounded text-xs">X</button>
                                         </div>
                                     ) : (
                                         <select
@@ -305,99 +307,103 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
                                             {allCategories.map(cat => (
                                                 <option key={cat} value={cat}>{cat}</option>
                                             ))}
-                                            <option value="__add_new__">+ Add New Category...</option>
+                                            <option value="__add_new__">+ Add New...</option>
                                         </select>
                                     )}
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <div className="p-3 bg-[#1a1a1a] border-b border-[#333] shrink-0">
+                {/* Bottom: Port Manager - 2 Columns */}
+                <div className="shrink-0 bg-[#1a1a1a] border-t border-[#333]">
+                    <div className="p-2 px-4 bg-[#111] border-b border-[#333] flex items-center justify-between">
+                        <div>
                             <h3 className="text-xs font-bold text-gray-400 uppercase">Port Manager</h3>
-                            <p className="text-[10px] text-gray-500 mt-1">Drag ports to image. Right-click on image to unmap.</p>
+                            <p className="text-[10px] text-gray-500">Drag ports to image. Right-click on image to unmap.</p>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 p-4 max-h-[180px] overflow-y-auto">
+                        {/* INPUTS COLUMN */}
+                        <div>
+                            <div className="flex justify-between items-center mb-2">
+                                <span className="text-[10px] font-bold text-green-400 uppercase">Inputs</span>
+                                <button onClick={() => handleAddNewPort(false)} className="text-[10px] bg-[#222] hover:bg-[#333] px-2 py-1 rounded flex items-center gap-1"><Plus size={10} /> Add</button>
+                            </div>
+                            <div className="space-y-1">
+                                {data.inputs.map((p, idx) => {
+                                    const isMapped = !!data.portMap?.[activeTab]?.[p.id];
+                                    const typeColor = CABLE_TYPES[p.type]?.color || '#22c55e';
+                                    const portNum = p.label.replace(/[^0-9]/g, '') || (idx + 1);
+                                    return (
+                                        <div key={p.id} className="flex items-center gap-2 bg-[#111] p-1 rounded border border-[#333]">
+                                            <div
+                                                draggable
+                                                onDragStart={(e) => { e.dataTransfer.setData('portId', p.id); e.dataTransfer.setData('type', 'new'); }}
+                                                className={`w-5 h-5 flex items-center justify-center rounded text-[9px] font-bold cursor-move shrink-0 ${isMapped ? 'bg-[#333] text-gray-500' : 'text-white'}`}
+                                                style={!isMapped ? { backgroundColor: typeColor } : {}}
+                                                title="Drag to image"
+                                            >
+                                                {portNum}
+                                            </div>
+                                            <input
+                                                className="bg-transparent border-none text-[10px] text-gray-300 flex-1 min-w-0 focus:outline-none"
+                                                value={p.label}
+                                                onChange={(e) => handlePortLabelChange(false, idx, e.target.value)}
+                                            />
+                                            <select
+                                                className="bg-[#0a0a0a] text-[9px] text-gray-400 rounded border-none w-14"
+                                                value={p.type}
+                                                onChange={(e) => handlePortTypeChange(false, idx, e.target.value)}
+                                            >
+                                                {Object.keys(CABLE_TYPES).map(t => <option key={t} value={t}>{t}</option>)}
+                                            </select>
+                                            <button onClick={() => handleRemovePort(false, idx)} className="text-red-500 hover:text-red-400"><Trash2 size={10} /></button>
+                                        </div>
+                                    );
+                                })}
+                            </div>
                         </div>
 
-                        <div className="flex-1 overflow-y-auto p-4 space-y-6">
-                            {/* INPUTS SECTION */}
-                            <div>
-                                <div className="flex justify-between items-center mb-2">
-                                    <span className="text-[10px] font-bold text-green-400 uppercase">Inputs</span>
-                                    <button onClick={() => handleAddNewPort(false)} className="text-[10px] bg-[#222] hover:bg-[#333] px-2 py-1 rounded flex items-center gap-1"><Plus size={10} /> Add</button>
-                                </div>
-                                <div className="space-y-1">
-                                    {data.inputs.map((p, idx) => {
-                                        const isMapped = !!data.portMap?.[activeTab]?.[p.id];
-                                        const typeColor = CABLE_TYPES[p.type]?.color || '#22c55e';
-                                        const portNum = p.label.replace(/[^0-9]/g, '') || (idx + 1);
-                                        return (
-                                            <div key={p.id} className="flex items-center gap-2 bg-[#111] p-1 rounded border border-[#333]">
-                                                <div
-                                                    draggable
-                                                    onDragStart={(e) => { e.dataTransfer.setData('portId', p.id); e.dataTransfer.setData('type', 'new'); }}
-                                                    className={`w-6 h-6 flex items-center justify-center rounded text-[10px] font-bold cursor-move shrink-0 ${isMapped ? 'bg-[#333] text-gray-500' : 'text-white'}`}
-                                                    style={!isMapped ? { backgroundColor: typeColor } : {}}
-                                                    title="Drag to image"
-                                                >
-                                                    {portNum}
-                                                </div>
-                                                <input
-                                                    className="bg-transparent border-none text-[10px] text-gray-300 w-full focus:outline-none"
-                                                    value={p.label}
-                                                    onChange={(e) => handlePortLabelChange(false, idx, e.target.value)}
-                                                />
-                                                <select
-                                                    className="bg-[#0a0a0a] text-[9px] text-gray-400 rounded border-none w-16"
-                                                    value={p.type}
-                                                    onChange={(e) => handlePortTypeChange(false, idx, e.target.value)}
-                                                >
-                                                    {Object.keys(CABLE_TYPES).map(t => <option key={t} value={t}>{t}</option>)}
-                                                </select>
-                                                <button onClick={() => handleRemovePort(false, idx)} className="text-red-500 hover:text-red-400"><Trash2 size={10} /></button>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
+                        {/* OUTPUTS COLUMN */}
+                        <div>
+                            <div className="flex justify-between items-center mb-2">
+                                <span className="text-[10px] font-bold text-blue-400 uppercase">Outputs</span>
+                                <button onClick={() => handleAddNewPort(true)} className="text-[10px] bg-[#222] hover:bg-[#333] px-2 py-1 rounded flex items-center gap-1"><Plus size={10} /> Add</button>
                             </div>
-
-                            {/* OUTPUTS SECTION */}
-                            <div>
-                                <div className="flex justify-between items-center mb-2">
-                                    <span className="text-[10px] font-bold text-blue-400 uppercase">Outputs</span>
-                                    <button onClick={() => handleAddNewPort(true)} className="text-[10px] bg-[#222] hover:bg-[#333] px-2 py-1 rounded flex items-center gap-1"><Plus size={10} /> Add</button>
-                                </div>
-                                <div className="space-y-1">
-                                    {data.outputs.map((p, idx) => {
-                                        const isMapped = !!data.portMap?.[activeTab]?.[p.id];
-                                        const typeColor = CABLE_TYPES[p.type]?.color || '#3b82f6';
-                                        const portNum = p.label.replace(/[^0-9]/g, '') || (idx + 1);
-                                        return (
-                                            <div key={p.id} className="flex items-center gap-2 bg-[#111] p-1 rounded border border-[#333]">
-                                                <div
-                                                    draggable
-                                                    onDragStart={(e) => { e.dataTransfer.setData('portId', p.id); e.dataTransfer.setData('type', 'new'); }}
-                                                    className={`w-6 h-6 flex items-center justify-center rounded text-[10px] font-bold cursor-move shrink-0 ${isMapped ? 'bg-[#333] text-gray-500' : 'text-white'}`}
-                                                    style={!isMapped ? { backgroundColor: typeColor } : {}}
-                                                    title="Drag to image"
-                                                >
-                                                    {portNum}
-                                                </div>
-                                                <input
-                                                    className="bg-transparent border-none text-[10px] text-gray-300 w-full focus:outline-none"
-                                                    value={p.label}
-                                                    onChange={(e) => handlePortLabelChange(true, idx, e.target.value)}
-                                                />
-                                                <select
-                                                    className="bg-[#0a0a0a] text-[9px] text-gray-400 rounded border-none w-16"
-                                                    value={p.type}
-                                                    onChange={(e) => handlePortTypeChange(true, idx, e.target.value)}
-                                                >
-                                                    {Object.keys(CABLE_TYPES).map(t => <option key={t} value={t}>{t}</option>)}
-                                                </select>
-                                                <button onClick={() => handleRemovePort(true, idx)} className="text-red-500 hover:text-red-400"><Trash2 size={10} /></button>
+                            <div className="space-y-1">
+                                {data.outputs.map((p, idx) => {
+                                    const isMapped = !!data.portMap?.[activeTab]?.[p.id];
+                                    const typeColor = CABLE_TYPES[p.type]?.color || '#3b82f6';
+                                    const portNum = p.label.replace(/[^0-9]/g, '') || (idx + 1);
+                                    return (
+                                        <div key={p.id} className="flex items-center gap-2 bg-[#111] p-1 rounded border border-[#333]">
+                                            <div
+                                                draggable
+                                                onDragStart={(e) => { e.dataTransfer.setData('portId', p.id); e.dataTransfer.setData('type', 'new'); }}
+                                                className={`w-5 h-5 flex items-center justify-center rounded text-[9px] font-bold cursor-move shrink-0 ${isMapped ? 'bg-[#333] text-gray-500' : 'text-white'}`}
+                                                style={!isMapped ? { backgroundColor: typeColor } : {}}
+                                                title="Drag to image"
+                                            >
+                                                {portNum}
                                             </div>
-                                        );
-                                    })}
-                                </div>
+                                            <input
+                                                className="bg-transparent border-none text-[10px] text-gray-300 flex-1 min-w-0 focus:outline-none"
+                                                value={p.label}
+                                                onChange={(e) => handlePortLabelChange(true, idx, e.target.value)}
+                                            />
+                                            <select
+                                                className="bg-[#0a0a0a] text-[9px] text-gray-400 rounded border-none w-14"
+                                                value={p.type}
+                                                onChange={(e) => handlePortTypeChange(true, idx, e.target.value)}
+                                            >
+                                                {Object.keys(CABLE_TYPES).map(t => <option key={t} value={t}>{t}</option>)}
+                                            </select>
+                                            <button onClick={() => handleRemovePort(true, idx)} className="text-red-500 hover:text-red-400"><Trash2 size={10} /></button>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
                     </div>
