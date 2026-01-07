@@ -333,7 +333,7 @@ export default function RackView() {
                         </div>
                     ))}
 
-                    <div className="flex flex-col items-center justify-center min-w-[300px] h-full p-4 opacity-50 hover:opacity-100 transition-opacity">
+                    <div className="flex flex-col items-center justify-center min-w-[300px] h-full p-4 opacity-50 hover:opacity-100 transition-opacity" style={{ marginLeft: '-50px', marginTop: '-12px' }}>
                         <button onClick={addRack} className="flex items-center gap-2 px-6 py-3 rounded-lg border-2 border-dashed border-gray-700 text-gray-500 hover:text-gray-300 hover:border-gray-500 hover:bg-[#1a1a1a] transition-all group">
                             <Plus size={24} className="group-hover:scale-110 transition-transform" />
                             <span className="font-bold uppercase tracking-widest text-sm">Add Rack</span>
