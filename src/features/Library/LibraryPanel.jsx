@@ -104,7 +104,6 @@ export default function LibraryPanel() {
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <div className="text-xs font-bold text-gray-300 truncate group-hover:text-white">{t.name}</div>
-                                            <div className="text-[9px] text-gray-500">{t.subcat || t.category}</div>
                                         </div>
                                     </div>
                                 ))}
