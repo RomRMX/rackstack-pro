@@ -20,7 +20,7 @@ export const CABLE_TYPES = {
     COAX: { color: '#8B4513', label: 'Coax/SPDIF', width: 3 },
 };
 
-export const USW_STYLE = { background: '#262626', color: '#e5e5e5', border: '1px solid #404040' };
+export const USW_STYLE = { background: '#333333', color: '#e5e5e5', border: '1px solid #404040' };
 
 export const INITIAL_LIBRARY = [
     // --- GEAR: Network & Power ---

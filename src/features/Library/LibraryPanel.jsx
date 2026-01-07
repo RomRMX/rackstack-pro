@@ -41,7 +41,7 @@ export default function LibraryPanel() {
             inputs: [],
             outputs: [],
             images: {},
-            style: { background: '#262626' }
+            style: { background: '#333333' }
         });
     };
 

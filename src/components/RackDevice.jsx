@@ -25,7 +25,7 @@ const RackDevice = ({ device, viewMode, isSelected, onSelect, onPortClick, selec
         width: `${(device.width || 1) * 100}%`,
         height: `${(device.uHeight || 1) * 100}%`,
         color: style.color || '#ccc',
-        backgroundColor: style.background || '#262626',
+        backgroundColor: style.background || '#333333',
         ...style
     };
 

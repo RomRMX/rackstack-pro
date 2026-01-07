@@ -126,7 +126,7 @@ export default function RackView() {
                 id: generateId(),
                 uPosition: uNumber,
                 rackId: rackId,
-                style: { background: '#262626', color: '#e5e5e5', border: '1px solid #404040' },
+                style: { background: '#333333', color: '#e5e5e5', border: '1px solid #404040' },
                 images: t.images || {},
                 portMap: t.portMap || {}
             };
@@ -264,7 +264,7 @@ export default function RackView() {
                 className={`flex-1 overflow-y-auto overflow-x-hidden bg-[var(--bg-main)] relative p-8 pl-12 ${isSpaceDown ? 'cursor-grab active:cursor-grabbing' : ''}`}
                 onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp}
             >
-                <div style={{ transform: `scale(${zoom})`, transformOrigin: 'top left', transition: 'transform 0.1s ease-out' }} className="flex gap-8 pb-32 relative">
+                <div style={{ transform: `scale(${zoom})`, transformOrigin: 'top left', transition: 'transform 0.1s ease-out' }} className="flex gap-8 pb-8 relative">
                     {racks.map(rack => (
                         <div key={rack.id} className="flex flex-col items-center group/rack">
                             {/* Rack Header */}
