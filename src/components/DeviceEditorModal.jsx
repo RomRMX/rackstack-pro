@@ -8,7 +8,22 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
     const [data, setData] = useState(null);
     const [activeTab, setActiveTab] = useState('front');
     const [loadingScan, setLoadingScan] = useState(false);
+    const [customCategories, setCustomCategories] = useState([]);
+    const [showAddCategory, setShowAddCategory] = useState(false);
+    const [newCategoryName, setNewCategoryName] = useState('');
     const imageRef = useRef(null);
+
+    const defaultCategories = ['Network', 'Power', 'Source', 'Processor', 'Video', 'Amp', 'accessory'];
+    const allCategories = [...new Set([...defaultCategories, ...customCategories])];
+
+    const handleAddCategory = () => {
+        if (newCategoryName.trim() && !allCategories.includes(newCategoryName.trim())) {
+            setCustomCategories(prev => [...prev, newCategoryName.trim()]);
+            setData({ ...data, subcat: newCategoryName.trim() });
+            setNewCategoryName('');
+            setShowAddCategory(false);
+        }
+    };
 
     useEffect(() => { if (device) setData(JSON.parse(JSON.stringify(device))); }, [device]);
 
@@ -261,27 +276,43 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
                                 </div>
                                 <div className="col-span-2">
                                     <label className="block text-[10px] text-gray-500 uppercase mb-1">Device Type</label>
-                                    <input
-                                        className="w-full bg-[#0a0a0a] border border-[#333] rounded p-1 text-xs text-gray-300 focus:border-blue-500 outline-none"
-                                        value={data.subcat || ''}
-                                        onChange={(e) => setData({ ...data, subcat: e.target.value })}
-                                        placeholder="e.g. Network, Sources..."
-                                        list="category-suggestions"
-                                    />
-                                    <datalist id="category-suggestions">
-                                        <option value="Network" />
-                                        <option value="Power" />
-                                        <option value="Source" />
-                                        <option value="Processor" />
-                                        <option value="Video" />
-                                        <option value="Amp" />
-                                        <option value="accessory" />
-                                    </datalist>
+                                    {showAddCategory ? (
+                                        <div className="flex gap-2">
+                                            <input
+                                                className="flex-1 bg-[#0a0a0a] border border-[#333] rounded p-1 text-xs text-gray-300 focus:border-blue-500 outline-none"
+                                                value={newCategoryName}
+                                                onChange={(e) => setNewCategoryName(e.target.value)}
+                                                onKeyDown={(e) => e.key === 'Enter' && handleAddCategory()}
+                                                placeholder="New category name..."
+                                                autoFocus
+                                            />
+                                            <button onClick={handleAddCategory} className="px-2 py-1 bg-blue-600 text-white rounded text-xs">Add</button>
+                                            <button onClick={() => { setShowAddCategory(false); setNewCategoryName(''); }} className="px-2 py-1 bg-[#333] text-gray-300 rounded text-xs">Cancel</button>
+                                        </div>
+                                    ) : (
+                                        <select
+                                            className="w-full bg-[#0a0a0a] border border-[#333] rounded p-1 text-xs text-gray-300 focus:border-blue-500 outline-none"
+                                            value={data.subcat || ''}
+                                            onChange={(e) => {
+                                                if (e.target.value === '__add_new__') {
+                                                    setShowAddCategory(true);
+                                                } else {
+                                                    setData({ ...data, subcat: e.target.value });
+                                                }
+                                            }}
+                                        >
+                                            <option value="">Select category...</option>
+                                            {allCategories.map(cat => (
+                                                <option key={cat} value={cat}>{cat}</option>
+                                            ))}
+                                            <option value="__add_new__">+ Add New Category...</option>
+                                        </select>
+                                    )}
                                 </div>
                             </div>
                         </div>
 
-                        <div className="p-3 bg-[#111] border-b border-[#222] shrink-0">
+                        <div className="p-3 bg-[#1a1a1a] border-b border-[#333] shrink-0">
                             <h3 className="text-xs font-bold text-gray-400 uppercase">Port Manager</h3>
                             <p className="text-[10px] text-gray-500 mt-1">Drag ports to image. Right-click on image to unmap.</p>
                         </div>
