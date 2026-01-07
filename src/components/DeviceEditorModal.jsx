@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Settings, Plus, Trash2, Loader, Activity, Upload, Image as ImageIcon } from 'lucide-react';
+import { Settings, Plus, Trash2, Loader, Activity, Upload, Image as ImageIcon, X } from 'lucide-react';
 import { CABLE_TYPES } from '../utils/constants';
 import { callGeminiVision } from '../utils/common';
 
@@ -29,7 +29,13 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
         }
     };
 
-
+    const handleDeleteImage = (side) => {
+        setData(prev => {
+            const newImages = { ...prev.images };
+            delete newImages[side];
+            return { ...prev, images: newImages };
+        });
+    };
 
     const handleDrop = (e) => {
         e.preventDefault();
@@ -133,8 +139,8 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
 
     return (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[3000] backdrop-blur-md">
-            <div className="bg-gray-900 w-[1000px] h-[85vh] flex flex-col rounded-xl border border-gray-700 shadow-2xl overflow-hidden">
-                <div className="p-4 border-b border-gray-800 flex justify-between items-center bg-gray-950 shrink-0">
+            <div className="bg-[#111] w-[1000px] h-[85vh] flex flex-col rounded-xl border border-[#333] shadow-2xl overflow-hidden">
+                <div className="p-4 border-b border-[#222] flex justify-between items-center bg-[#0a0a0a] shrink-0">
                     <h2 className="text-sm font-bold text-white flex items-center gap-2"><Settings size={16} className="text-blue-500" /> Editing: {data.name}</h2>
                     <div className="flex gap-2">
                         <button onClick={onClose} className="px-3 py-1 text-xs text-gray-400 hover:text-white">Cancel</button>
@@ -142,21 +148,21 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
                     </div>
                 </div>
 
-                <div className="flex bg-gray-800 border-b border-gray-700 shrink-0">
+                <div className="flex bg-[#1a1a1a] border-b border-[#333] shrink-0">
                     {['front', 'back'].map(tab => (
-                        <button key={tab} onClick={() => setActiveTab(tab)} className={`flex-1 py-2 text-xs font-bold uppercase ${activeTab === tab ? 'bg-gray-700 text-white border-b-2 border-blue-500' : 'text-gray-500'}`}>{tab} Panel</button>
+                        <button key={tab} onClick={() => setActiveTab(tab)} className={`flex-1 py-2 text-xs font-bold uppercase ${activeTab === tab ? 'bg-[#222] text-white border-b-2 border-blue-500' : 'text-gray-500'}`}>{tab} Panel</button>
                     ))}
                 </div>
 
                 <div className="flex-1 flex overflow-hidden">
-                    <div className="flex-1 bg-[#111] relative flex flex-col items-center justify-center p-8 overflow-auto">
+                    <div className="flex-1 bg-[#0a0a0a] relative flex flex-col items-center justify-center p-8 overflow-auto">
                         <div className="mb-4 text-xs text-gray-500">
                             Proportional Rack View ({data.width * 100}% Width, {data.uHeight}U Height)
                         </div>
 
                         <div
                             ref={imageRef}
-                            className="relative shadow-2xl border border-gray-700 bg-gray-800 transition-all"
+                            className="relative shadow-2xl border border-[#333] bg-[#1a1a1a] transition-all"
                             style={{
                                 width: `${containerWidth}px`,
                                 height: `${containerHeight}px`
@@ -203,31 +209,38 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
                             })}
                         </div>
 
-                        <div className="mt-8 flex gap-3 p-3 bg-gray-900/80 rounded-lg border border-gray-800">
-
-                            <label className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded text-xs font-bold flex items-center gap-2 cursor-pointer">
-                                <Upload size={14} /> Upload
+                        <div className="mt-6 flex gap-3">
+                            <label className="px-4 py-2 bg-[#222] hover:bg-[#333] text-gray-300 rounded text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors">
+                                <Upload size={14} /> Upload Image
                                 <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e, activeTab)} />
                             </label>
+                            {data.images?.[activeTab] && (
+                                <button
+                                    onClick={() => handleDeleteImage(activeTab)}
+                                    className="px-4 py-2 bg-red-900/30 hover:bg-red-900/50 text-red-400 rounded text-xs font-bold flex items-center gap-2 transition-colors"
+                                >
+                                    <Trash2 size={14} /> Delete Image
+                                </button>
+                            )}
                         </div>
                     </div>
 
-                    <div className="w-80 bg-gray-800 border-l border-gray-700 flex flex-col z-10 h-full">
+                    <div className="w-80 bg-[#1a1a1a] border-l border-[#333] flex flex-col z-10 h-full">
                         {/* FIXED HEIGHT SETTINGS PANEL */}
-                        <div className="p-4 bg-gray-900 border-b border-gray-800 flex flex-col gap-3 shrink-0">
+                        <div className="p-4 bg-[#111] border-b border-[#222] flex flex-col gap-3 shrink-0">
                             <h3 className="text-xs font-bold text-gray-400 uppercase">Device Settings</h3>
                             <div className="grid grid-cols-2 gap-3">
                                 <div className="col-span-2">
                                     <label className="block text-[10px] text-gray-500 uppercase mb-1">Name</label>
-                                    <input className="w-full bg-[#111] border border-gray-700 rounded p-1 text-xs text-gray-300 focus:border-blue-500 outline-none" value={data.name} onChange={(e) => setData({ ...data, name: e.target.value })} />
+                                    <input className="w-full bg-[#0a0a0a] border border-[#333] rounded p-1 text-xs text-gray-300 focus:border-blue-500 outline-none" value={data.name} onChange={(e) => setData({ ...data, name: e.target.value })} />
                                 </div>
                                 <div>
                                     <label className="block text-[10px] text-gray-500 uppercase mb-1">Height (U)</label>
-                                    <input type="number" min="1" max="42" className="w-full bg-[#111] border border-gray-700 rounded p-1 text-xs text-gray-300 focus:border-blue-500 outline-none" value={data.uHeight} onChange={(e) => setData({ ...data, uHeight: Math.max(1, parseInt(e.target.value) || 1) })} />
+                                    <input type="number" min="1" max="42" className="w-full bg-[#0a0a0a] border border-[#333] rounded p-1 text-xs text-gray-300 focus:border-blue-500 outline-none" value={data.uHeight} onChange={(e) => setData({ ...data, uHeight: Math.max(1, parseInt(e.target.value) || 1) })} />
                                 </div>
                                 <div>
                                     <label className="block text-[10px] text-gray-500 uppercase mb-1">Width</label>
-                                    <select className="w-full bg-[#111] border border-gray-700 rounded p-1 text-xs text-gray-300 focus:border-blue-500 outline-none" value={data.width || 1} onChange={(e) => setData({ ...data, width: parseFloat(e.target.value) })}>
+                                    <select className="w-full bg-[#0a0a0a] border border-[#333] rounded p-1 text-xs text-gray-300 focus:border-blue-500 outline-none" value={data.width || 1} onChange={(e) => setData({ ...data, width: parseFloat(e.target.value) })}>
                                         <option value={1}>Full (19")</option>
                                         <option value={0.5}>1/2 Width</option>
                                         <option value={0.33}>1/3 Width</option>
@@ -236,20 +249,20 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
                                 </div>
                                 <div>
                                     <label className="block text-[10px] text-gray-500 uppercase mb-1">IP Address</label>
-                                    <input className="w-full bg-[#111] border border-gray-700 rounded p-1 text-xs text-gray-300 focus:border-blue-500 outline-none" value={data.ipAddress || ''} onChange={(e) => setData({ ...data, ipAddress: e.target.value })} placeholder="0.0.0.0" />
+                                    <input className="w-full bg-[#0a0a0a] border border-[#333] rounded p-1 text-xs text-gray-300 focus:border-blue-500 outline-none" value={data.ipAddress || ''} onChange={(e) => setData({ ...data, ipAddress: e.target.value })} placeholder="0.0.0.0" />
                                 </div>
                                 <div>
                                     <label className="block text-[10px] text-gray-500 uppercase mb-1">MAC Address</label>
-                                    <input className="w-full bg-[#111] border border-gray-700 rounded p-1 text-xs text-gray-300 focus:border-blue-500 outline-none" value={data.macAddress || ''} onChange={(e) => setData({ ...data, macAddress: e.target.value })} placeholder="00:00:..." />
+                                    <input className="w-full bg-[#0a0a0a] border border-[#333] rounded p-1 text-xs text-gray-300 focus:border-blue-500 outline-none" value={data.macAddress || ''} onChange={(e) => setData({ ...data, macAddress: e.target.value })} placeholder="00:00:..." />
                                 </div>
                                 <div className="col-span-2">
                                     <label className="block text-[10px] text-gray-500 uppercase mb-1">System</label>
-                                    <input className="w-full bg-[#111] border border-gray-700 rounded p-1 text-xs text-gray-300 focus:border-blue-500 outline-none" value={data.system || ''} onChange={(e) => setData({ ...data, system: e.target.value })} placeholder="e.g. Audio Distribution" />
+                                    <input className="w-full bg-[#0a0a0a] border border-[#333] rounded p-1 text-xs text-gray-300 focus:border-blue-500 outline-none" value={data.system || ''} onChange={(e) => setData({ ...data, system: e.target.value })} placeholder="e.g. Audio Distribution" />
                                 </div>
                                 <div className="col-span-2">
-                                    <label className="block text-[10px] text-gray-500 uppercase mb-1">Sidebar Category</label>
+                                    <label className="block text-[10px] text-gray-500 uppercase mb-1">Device Type</label>
                                     <input
-                                        className="w-full bg-[#111] border border-gray-700 rounded p-1 text-xs text-gray-300 focus:border-blue-500 outline-none"
+                                        className="w-full bg-[#0a0a0a] border border-[#333] rounded p-1 text-xs text-gray-300 focus:border-blue-500 outline-none"
                                         value={data.subcat || ''}
                                         onChange={(e) => setData({ ...data, subcat: e.target.value })}
                                         placeholder="e.g. Network, Sources..."
@@ -260,6 +273,7 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
                                         <option value="Power" />
                                         <option value="Source" />
                                         <option value="Processor" />
+                                        <option value="Video" />
                                         <option value="Amp" />
                                         <option value="accessory" />
                                     </datalist>
@@ -267,7 +281,7 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
                             </div>
                         </div>
 
-                        <div className="p-3 bg-gray-900 border-b border-gray-800 shrink-0">
+                        <div className="p-3 bg-[#111] border-b border-[#222] shrink-0">
                             <h3 className="text-xs font-bold text-gray-400 uppercase">Port Manager</h3>
                             <p className="text-[10px] text-gray-500 mt-1">Drag ports to image. Right-click on image to unmap.</p>
                         </div>
@@ -277,7 +291,7 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
                             <div>
                                 <div className="flex justify-between items-center mb-2">
                                     <span className="text-[10px] font-bold text-green-400 uppercase">Inputs</span>
-                                    <button onClick={() => handleAddNewPort(false)} className="text-[10px] bg-gray-700 hover:bg-gray-600 px-2 py-1 rounded flex items-center gap-1"><Plus size={10} /> Add</button>
+                                    <button onClick={() => handleAddNewPort(false)} className="text-[10px] bg-[#222] hover:bg-[#333] px-2 py-1 rounded flex items-center gap-1"><Plus size={10} /> Add</button>
                                 </div>
                                 <div className="space-y-1">
                                     {data.inputs.map((p, idx) => {
@@ -285,11 +299,11 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
                                         const typeColor = CABLE_TYPES[p.type]?.color || '#22c55e';
                                         const portNum = p.label.replace(/[^0-9]/g, '') || (idx + 1);
                                         return (
-                                            <div key={p.id} className="flex items-center gap-2 bg-gray-900 p-1 rounded border border-gray-700">
+                                            <div key={p.id} className="flex items-center gap-2 bg-[#111] p-1 rounded border border-[#333]">
                                                 <div
                                                     draggable
                                                     onDragStart={(e) => { e.dataTransfer.setData('portId', p.id); e.dataTransfer.setData('type', 'new'); }}
-                                                    className={`w-6 h-6 flex items-center justify-center rounded text-[10px] font-bold cursor-move shrink-0 ${isMapped ? 'bg-gray-700 text-gray-500' : 'text-white'}`}
+                                                    className={`w-6 h-6 flex items-center justify-center rounded text-[10px] font-bold cursor-move shrink-0 ${isMapped ? 'bg-[#333] text-gray-500' : 'text-white'}`}
                                                     style={!isMapped ? { backgroundColor: typeColor } : {}}
                                                     title="Drag to image"
                                                 >
@@ -301,7 +315,7 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
                                                     onChange={(e) => handlePortLabelChange(false, idx, e.target.value)}
                                                 />
                                                 <select
-                                                    className="bg-[#111] text-[9px] text-gray-400 rounded border-none w-16"
+                                                    className="bg-[#0a0a0a] text-[9px] text-gray-400 rounded border-none w-16"
                                                     value={p.type}
                                                     onChange={(e) => handlePortTypeChange(false, idx, e.target.value)}
                                                 >
@@ -318,7 +332,7 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
                             <div>
                                 <div className="flex justify-between items-center mb-2">
                                     <span className="text-[10px] font-bold text-blue-400 uppercase">Outputs</span>
-                                    <button onClick={() => handleAddNewPort(true)} className="text-[10px] bg-gray-700 hover:bg-gray-600 px-2 py-1 rounded flex items-center gap-1"><Plus size={10} /> Add</button>
+                                    <button onClick={() => handleAddNewPort(true)} className="text-[10px] bg-[#222] hover:bg-[#333] px-2 py-1 rounded flex items-center gap-1"><Plus size={10} /> Add</button>
                                 </div>
                                 <div className="space-y-1">
                                     {data.outputs.map((p, idx) => {
@@ -326,11 +340,11 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
                                         const typeColor = CABLE_TYPES[p.type]?.color || '#3b82f6';
                                         const portNum = p.label.replace(/[^0-9]/g, '') || (idx + 1);
                                         return (
-                                            <div key={p.id} className="flex items-center gap-2 bg-gray-900 p-1 rounded border border-gray-700">
+                                            <div key={p.id} className="flex items-center gap-2 bg-[#111] p-1 rounded border border-[#333]">
                                                 <div
                                                     draggable
                                                     onDragStart={(e) => { e.dataTransfer.setData('portId', p.id); e.dataTransfer.setData('type', 'new'); }}
-                                                    className={`w-6 h-6 flex items-center justify-center rounded text-[10px] font-bold cursor-move shrink-0 ${isMapped ? 'bg-gray-700 text-gray-500' : 'text-white'}`}
+                                                    className={`w-6 h-6 flex items-center justify-center rounded text-[10px] font-bold cursor-move shrink-0 ${isMapped ? 'bg-[#333] text-gray-500' : 'text-white'}`}
                                                     style={!isMapped ? { backgroundColor: typeColor } : {}}
                                                     title="Drag to image"
                                                 >
@@ -342,7 +356,7 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
                                                     onChange={(e) => handlePortLabelChange(true, idx, e.target.value)}
                                                 />
                                                 <select
-                                                    className="bg-[#111] text-[9px] text-gray-400 rounded border-none w-16"
+                                                    className="bg-[#0a0a0a] text-[9px] text-gray-400 rounded border-none w-16"
                                                     value={p.type}
                                                     onChange={(e) => handlePortTypeChange(true, idx, e.target.value)}
                                                 >
@@ -363,3 +377,4 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
 };
 
 export default DeviceEditorModal;
+
