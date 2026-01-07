@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { INITIAL_LIBRARY } from '../utils/constants';
+import { DEFAULT_RACKS, DEFAULT_DEVICES, DEFAULT_CONNECTIONS } from '../utils/initialState';
 import { generateId } from '../utils/common';
 
 const ProjectContext = createContext();
@@ -30,11 +31,9 @@ export const ProjectProvider = ({ children }) => {
         const newDefaults = INITIAL_LIBRARY.filter(d => !savedTypes.has(d.type));
         return [...saved, ...newDefaults].length > 0 ? [...saved, ...newDefaults] : INITIAL_LIBRARY;
     });
-    const [racks, setRacks] = useState(() => loadState('prb_racks', [
-        { id: 'rack-1', name: 'Rack 1', uHeight: 42, locked: false }
-    ]));
-    const [devices, setDevices] = useState(() => loadState('prb_devices', []));
-    const [connections, setConnections] = useState(() => loadState('prb_connections', []));
+    const [racks, setRacks] = useState(() => loadState('prb_racks', DEFAULT_RACKS));
+    const [devices, setDevices] = useState(() => loadState('prb_devices', DEFAULT_DEVICES));
+    const [connections, setConnections] = useState(() => loadState('prb_connections', DEFAULT_CONNECTIONS));
 
     // UI State that needs to be global
     const [selectedDeviceIds, setSelectedDeviceIds] = useState([]);
