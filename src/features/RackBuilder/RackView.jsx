@@ -203,13 +203,9 @@ export default function RackView() {
                             </button>
                         </div>
                         <div className="h-6 w-px bg-[#333]"></div>
-                        {hoveredInfo ? (
+                        {hoveredInfo && (
                             <div className="flex items-center gap-2 text-blue-400 font-mono text-xs animate-in fade-in">
                                 <MousePointer2 size={14} /> {hoveredInfo}
-                            </div>
-                        ) : (
-                            <div className="flex items-center gap-2 text-gray-600 text-xs text-nowrap">
-                                <Info size={14} /> Span <span>Hover over a port to see details</span>
                             </div>
                         )}
                     </div>
