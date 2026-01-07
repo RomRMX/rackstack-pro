@@ -53,11 +53,8 @@ export const ProjectProvider = ({ children }) => {
                 alert("Rack is locked.");
                 return prev;
             }
-            if (confirm('Are you sure? Devices in this rack will be removed.')) {
-                setDevices(prevDevices => prevDevices.filter(d => d.rackId !== id));
-                return prev.filter(r => r.id !== id);
-            }
-            return prev;
+            setDevices(prevDevices => prevDevices.filter(d => d.rackId !== id));
+            return prev.filter(r => r.id !== id);
         });
     };
 
@@ -76,11 +73,9 @@ export const ProjectProvider = ({ children }) => {
 
     const removeDevices = (ids) => {
         if (!ids || ids.length === 0) return;
-        if (confirm(`Delete ${ids.length} devices?`)) {
-            setDevices(prev => prev.filter(d => !ids.includes(d.id)));
-            setConnections(prev => prev.filter(c => !ids.includes(c.fromDev) && !ids.includes(c.toDev)));
-            setSelectedDeviceIds(prev => prev.filter(id => !ids.includes(id)));
-        }
+        setDevices(prev => prev.filter(d => !ids.includes(d.id)));
+        setConnections(prev => prev.filter(c => !ids.includes(c.fromDev) && !ids.includes(c.toDev)));
+        setSelectedDeviceIds(prev => prev.filter(id => !ids.includes(id)));
     };
 
     const moveDevice = (deviceId, direction) => {

@@ -5,7 +5,8 @@ import { CABLE_TYPES } from '../utils/constants';
 
 const RackDevice = ({ device, viewMode, isSelected, onSelect, onPortClick, selectedPort, connections, onHoverInfo, onDragStart, onDragEnd }) => {
     const isBack = viewMode === 'back';
-    const bgImage = isBack ? device.images?.back : device.images?.front;
+    // Use user image if available for the current view
+    const userImage = isBack ? device.images?.back : device.images?.front;
     const style = device.style || {};
 
     const getPortPosition = (portId, isOutput) => {
@@ -26,14 +27,16 @@ const RackDevice = ({ device, viewMode, isSelected, onSelect, onPortClick, selec
         ...style
     };
 
-    if (bgImage) {
-        computedStyle.background = `url("${import.meta.env.BASE_URL}${bgImage}") center/100% 100% no-repeat`;
+    if (userImage) {
+        // User has uploaded an image for this view
+        computedStyle.background = `url("${import.meta.env.BASE_URL}${userImage}") center/100% 100% no-repeat`;
         computedStyle.border = 'none';
         computedStyle.borderLeft = 'none';
         computedStyle.borderRight = 'none';
         computedStyle.borderTop = 'none';
         computedStyle.borderBottom = 'none';
     } else {
+        // No image - show flat color background (device will display name text)
         computedStyle.background = style.background || '#262626';
     }
 
@@ -64,9 +67,9 @@ const RackDevice = ({ device, viewMode, isSelected, onSelect, onPortClick, selec
             className={`relative group box-border border-r border-black last:border-r-0 transition-all cursor-grab active:cursor-grabbing ${isSelected ? 'brightness-110' : 'hover:brightness-105'}`}
             style={computedStyle}
         >
-            {!bgImage && (
+            {!userImage && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-1 overflow-hidden">
-                    <span className={`font-bold uppercase tracking-wider text-[10px] text-center leading-tight`}>
+                    <span className={`font-bold uppercase tracking-wider text-[10px] text-center leading-tight text-white drop-shadow-md`}>
                         {device.name}
                     </span>
                 </div>
