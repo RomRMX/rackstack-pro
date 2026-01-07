@@ -232,30 +232,32 @@ export default function RackView() {
                     </div>
                 </div>
 
-                {/* Selected Item Controls */}
-                {selectedDeviceIds.length > 0 && (
-                    <div className="flex items-center gap-4 w-full border-t border-[#333] pt-2 animate-in fade-in">
-                        <div className="bg-blue-900/20 px-3 py-1 rounded border border-blue-500/30 text-xs font-bold text-blue-200 uppercase">
-                            {selectedDeviceIds.length > 1 ? `${selectedDeviceIds.length} Selected` : activeDevice?.name}
-                        </div>
-                        <div className="h-6 w-[1px] bg-[#333]"></div>
-                        <div className="flex items-center gap-2">
-                            {selectedDeviceIds.length === 1 && activeDevice && (activeDevice.width || 1) < 1 && (
-                                <>
-                                    <button onClick={() => moveDevice(activeDevice.id, viewMode === 'back' ? 1 : -1)} className="p-1.5 bg-[#222] hover:bg-[#333] rounded text-gray-300 hover:text-white"><ChevronLeft size={16} /></button>
-                                    <button onClick={() => moveDevice(activeDevice.id, viewMode === 'back' ? -1 : 1)} className="p-1.5 bg-[#222] hover:bg-[#333] rounded text-gray-300 hover:text-white"><ChevronRight size={16} /></button>
-                                    <div className="h-4 w-[1px] bg-[#333] mx-2"></div>
-                                </>
-                            )}
-                            <button onClick={handleDuplicateDevice} className="flex items-center gap-2 px-3 py-1.5 bg-[#222] hover:bg-[#333] text-gray-300 hover:text-white rounded text-xs font-bold uppercase"><Copy size={14} /> Duplicate</button>
-                            {selectedDeviceIds.length === 1 && (
-                                <button onClick={() => setEditingDevice(activeDevice)} className="flex items-center gap-2 px-3 py-1.5 bg-[#222] hover:bg-[#333] text-gray-300 hover:text-white rounded text-xs font-bold uppercase"><Settings size={14} /> Edit</button>
-                            )}
-                            <button onClick={() => removeDevices(selectedDeviceIds)} className="flex items-center gap-2 px-3 py-1.5 bg-red-900/20 hover:bg-red-900/40 text-red-400 hover:text-red-300 rounded text-xs font-bold uppercase"><Trash2 size={14} /> Delete</button>
-                        </div>
-                        <button onClick={() => setSelectedDeviceIds([])} className="ml-auto p-2 text-gray-500 hover:text-white hover:bg-[#333] rounded"><X size={18} /></button>
-                    </div>
-                )}
+                {/* Selected Item Controls - Always reserve space to prevent layout shift */}
+                <div className={`flex items-center gap-4 w-full border-t border-[#333] pt-2 h-[44px] transition-opacity duration-150 ${selectedDeviceIds.length > 0 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                    {selectedDeviceIds.length > 0 && (
+                        <>
+                            <div className="bg-blue-900/20 px-3 py-1 rounded border border-blue-500/30 text-xs font-bold text-blue-200 uppercase">
+                                {selectedDeviceIds.length > 1 ? `${selectedDeviceIds.length} Selected` : activeDevice?.name}
+                            </div>
+                            <div className="h-6 w-[1px] bg-[#333]"></div>
+                            <div className="flex items-center gap-2">
+                                {selectedDeviceIds.length === 1 && activeDevice && (activeDevice.width || 1) < 1 && (
+                                    <>
+                                        <button onClick={() => moveDevice(activeDevice.id, viewMode === 'back' ? 1 : -1)} className="p-1.5 bg-[#222] hover:bg-[#333] rounded text-gray-300 hover:text-white"><ChevronLeft size={16} /></button>
+                                        <button onClick={() => moveDevice(activeDevice.id, viewMode === 'back' ? -1 : 1)} className="p-1.5 bg-[#222] hover:bg-[#333] rounded text-gray-300 hover:text-white"><ChevronRight size={16} /></button>
+                                        <div className="h-4 w-[1px] bg-[#333] mx-2"></div>
+                                    </>
+                                )}
+                                <button onClick={handleDuplicateDevice} className="flex items-center gap-2 px-3 py-1.5 bg-[#222] hover:bg-[#333] text-gray-300 hover:text-white rounded text-xs font-bold uppercase"><Copy size={14} /> Duplicate</button>
+                                {selectedDeviceIds.length === 1 && (
+                                    <button onClick={() => setEditingDevice(activeDevice)} className="flex items-center gap-2 px-3 py-1.5 bg-[#222] hover:bg-[#333] text-gray-300 hover:text-white rounded text-xs font-bold uppercase"><Settings size={14} /> Edit</button>
+                                )}
+                                <button onClick={() => removeDevices(selectedDeviceIds)} className="flex items-center gap-2 px-3 py-1.5 bg-red-900/20 hover:bg-red-900/40 text-red-400 hover:text-red-300 rounded text-xs font-bold uppercase"><Trash2 size={14} /> Delete</button>
+                            </div>
+                            <button onClick={() => setSelectedDeviceIds([])} className="ml-auto p-2 text-gray-500 hover:text-white hover:bg-[#333] rounded"><X size={18} /></button>
+                        </>
+                    )}
+                </div>
             </div>
 
             {/* Canvas */}
