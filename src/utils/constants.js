@@ -146,14 +146,17 @@ export const INITIAL_LIBRARY = [
     },
     // --- ACCESSORIES ---
     {
-        type: 'spacer_1u', name: 'Vented Blank (1U)', uHeight: 1, width: 1, category: 'accessory', inputs: [], outputs: [],
+        type: 'vented_panel_1u', name: 'Vented Panel (1U)', uHeight: 1, width: 1, category: 'accessory', inputs: [], outputs: [],
         style: {
-            background: 'repeating-linear-gradient(90deg, #262626 0px, #262626 4px, #111 5px, #111 6px)',
+            background: 'repeating-linear-gradient(90deg, #1a1a1a 0px, #1a1a1a 4px, #0a0a0a 5px, #0a0a0a 6px)',
             border: '1px solid #333'
         }
     },
-    { type: 'spacer_2u', name: 'Solid Blank (2U)', uHeight: 2, width: 1, category: 'accessory', inputs: [], outputs: [], style: { background: '#262626' } },
-    { type: 'spacer_half_1u', name: 'Half-Rack Spacer (1U)', uHeight: 1, width: 0.5, category: 'accessory', inputs: [], outputs: [], style: { background: '#262626', border: '1px solid #333' } },
+    { type: 'blank_panel_1u', name: 'Blank Panel (1U)', uHeight: 1, width: 1, category: 'accessory', inputs: [], outputs: [], style: { background: '#1a1a1a', border: '1px solid #333' } },
+    { type: 'blank_panel_2u', name: 'Blank Panel (2U)', uHeight: 2, width: 1, category: 'accessory', inputs: [], outputs: [], style: { background: '#1a1a1a', border: '1px solid #333' } },
+    { type: 'blank_panel_half', name: 'Blank Panel (.5U)', uHeight: 1, width: 0.5, category: 'accessory', inputs: [], outputs: [], style: { background: '#1a1a1a', border: '1px solid #333' } },
+    { type: 'drawer_3u', name: 'Drawer (3U)', uHeight: 3, width: 1, category: 'accessory', inputs: [], outputs: [], style: { background: '#1a1a1a', border: '1px solid #333' } },
+    { type: 'drawer_4u', name: 'Drawer (4U)', uHeight: 4, width: 1, category: 'accessory', inputs: [], outputs: [], style: { background: '#1a1a1a', border: '1px solid #333' } },
     // --- GEAR: Media Servers ---
     {
         type: 'kaleidescape_strato', name: 'Kaleidescape Strato V', uHeight: 1, width: 0.5, category: 'gear', subcat: 'Video',
