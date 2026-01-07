@@ -20,24 +20,28 @@ const RackDevice = ({ device, viewMode, isSelected, onSelect, onPortClick, selec
         return { x: ((idx + 1) / (count + 1)) * 100, y: 90 };
     };
 
+    // Always start with a solid background color for fallback
     const computedStyle = {
         width: `${(device.width || 1) * 100}%`,
         height: `${(device.uHeight || 1) * 100}%`,
         color: style.color || '#ccc',
+        backgroundColor: style.background || '#262626',
         ...style
     };
 
     if (userImage) {
-        // User has uploaded an image for this view
-        computedStyle.background = `url("${import.meta.env.BASE_URL}${userImage}") center/100% 100% no-repeat`;
+        // Properly join BASE_URL and image path, avoiding double slashes
+        const baseUrl = import.meta.env.BASE_URL || '/';
+        const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+        const cleanPath = userImage.startsWith('/') ? userImage : '/' + userImage;
+        const fullPath = `${cleanBase}${cleanPath}`;
+
+        computedStyle.background = `url("${fullPath}") center/100% 100% no-repeat`;
         computedStyle.border = 'none';
         computedStyle.borderLeft = 'none';
         computedStyle.borderRight = 'none';
         computedStyle.borderTop = 'none';
         computedStyle.borderBottom = 'none';
-    } else {
-        // No image - show flat color background (device will display name text)
-        computedStyle.background = style.background || '#262626';
     }
 
     if (isSelected) {
