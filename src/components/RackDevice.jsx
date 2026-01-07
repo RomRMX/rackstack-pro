@@ -20,14 +20,21 @@ const RackDevice = ({ device, viewMode, isSelected, onSelect, onPortClick, selec
         return { x: ((idx + 1) / (count + 1)) * 100, y: 90 };
     };
 
+    const isAccessory = device.category === 'accessory' || device.subcat === 'accessory';
     // Always start with a solid background color for fallback
     const computedStyle = {
         width: `${(device.width || 1) * 100}%`,
         height: `${(device.uHeight || 1) * 100}%`,
         color: style.color || '#ccc',
-        backgroundColor: style.background || '#333333',
+        backgroundColor: isAccessory ? '#1a1a1a' : (style.background || '#333333'),
+        border: '1px solid #666', // Higher contrast outline
         ...style
     };
+
+    // Ensure accessories always have dark background unless specific style overrides extremely locally
+    if (isAccessory && !style.background) {
+        computedStyle.backgroundColor = '#1a1a1a';
+    }
 
     if (userImage) {
         // Properly join BASE_URL and image path, avoiding double slashes

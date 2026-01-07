@@ -191,7 +191,7 @@ export default function RackView() {
         <div className="flex-1 flex flex-col relative overflow-hidden bg-[var(--bg-main)] h-full" onClick={() => setSelectedDeviceIds([])}>
 
             {/* Top Controls */}
-            <div className="w-full bg-[#111] border-b border-[#222] z-50 px-6 py-4 flex-none shadow-md flex flex-col justify-center gap-4" onClick={e => e.stopPropagation()}>
+            <div className="w-full bg-[#111] border-b border-[#222] z-50 px-6 py-2 flex-none shadow-md flex flex-col justify-center gap-4" onClick={e => e.stopPropagation()}>
                 <div className="flex justify-between items-center w-full">
                     <div className="flex items-center gap-5">
                         <div className="flex items-center gap-3">
@@ -202,6 +202,10 @@ export default function RackView() {
                                 <RotateCcw size={18} />
                             </button>
                         </div>
+                        <div className="h-6 w-px bg-[#333]"></div>
+                        <button onClick={addRack} className="flex items-center gap-2 px-3 py-1 bg-[#1a1a1a] hover:bg-[#222] text-blue-500 hover:text-blue-400 rounded-md text-xs font-black uppercase tracking-wider transition-colors border border-[#333] shadow-sm">
+                            <Plus size={14} /> Add Rack
+                        </button>
                         <div className="h-6 w-px bg-[#333]"></div>
                         {hoveredInfo && (
                             <div className="flex items-center gap-2 text-blue-400 font-mono text-xs animate-in fade-in">
@@ -216,10 +220,7 @@ export default function RackView() {
                             <div className="w-10 text-center text-xs font-mono text-gray-500">{Math.round(zoom * 100)}%</div>
                             <button onClick={() => setZoom(z => Math.min(4, z + 0.1))} className="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#333]">+</button>
                         </div>
-                        <button onClick={addRack} className="flex items-center gap-2 px-4 py-2 bg-[#1a1a1a] hover:bg-[#222] text-blue-500 hover:text-blue-400 rounded-md text-xs font-black uppercase tracking-wider transition-colors border border-[#333] shadow-sm h-[36px]">
-                            <Plus size={14} /> Add Rack
-                        </button>
-                        <div className="h-8 w-px bg-[#333] mx-4"></div>
+                        <div className="h-6 w-px bg-[#333] mx-4"></div>
                         <div className="flex items-center gap-2">
                             <button onClick={() => { setSaveLoadMode('save'); setShowSaveLoadModal(true); }} className="px-4 py-2 bg-[#1a1a1a] hover:bg-[#222] text-gray-300 hover:text-white rounded-md text-xs font-bold uppercase tracking-wider border border-[#333]">SAVE</button>
                             <button onClick={() => { setSaveLoadMode('load'); setShowSaveLoadModal(true); }} className="px-4 py-2 bg-[#1a1a1a] hover:bg-[#222] text-gray-300 hover:text-white rounded-md text-xs font-bold uppercase tracking-wider border border-[#333]">LOAD</button>
