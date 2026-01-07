@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
-import { Layers, Plus, Search } from 'lucide-react';
+import { Layers, Plus, Search, FolderPlus } from 'lucide-react';
 import { useProject } from '../../context/ProjectContext';
 import { generateId } from '../../utils/common';
 
 export default function LibraryPanel() {
     const { library, addToLibrary, setDraggingItem } = useProject();
     const [searchTerm, setSearchTerm] = useState('');
+    const [customCats, setCustomCats] = useState([]);
+    const [showAddCatInput, setShowAddCatInput] = useState(false);
+    const [newCatName, setNewCatName] = useState('');
 
     // Dynamic Categories
-    const defaultCats = ['Network', 'Power', 'Source', 'Processor', 'Amp', 'accessory'];
+    const defaultCats = ['Network', 'Power', 'Source', 'Processor', 'Video', 'Amp', 'accessory'];
     const usedCats = [...new Set(library.map(d => d.subcat || (d.category === 'accessory' ? 'accessory' : 'Other')))];
-    const allCats = [...new Set([...defaultCats, ...usedCats])];
+    const allCats = [...new Set([...defaultCats, ...usedCats, ...customCats])];
 
     const sortedCats = allCats.sort((a, b) => {
         const idxA = defaultCats.indexOf(a);
@@ -40,6 +43,14 @@ export default function LibraryPanel() {
             images: {},
             style: { background: '#262626' }
         });
+    };
+
+    const handleAddCategory = () => {
+        if (newCatName.trim() && !allCats.includes(newCatName.trim())) {
+            setCustomCats(prev => [...prev, newCatName.trim()]);
+            setNewCatName('');
+            setShowAddCatInput(false);
+        }
     };
 
     return (
@@ -101,6 +112,42 @@ export default function LibraryPanel() {
                         </div>
                     );
                 })}
+
+                {/* Add Category Section */}
+                <div className="p-4 pb-8">
+                    {showAddCatInput ? (
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="text"
+                                placeholder="Category name..."
+                                value={newCatName}
+                                onChange={(e) => setNewCatName(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && handleAddCategory()}
+                                className="flex-1 bg-[var(--bg-panel)] text-xs text-white border border-[var(--border-color)] rounded px-2 py-1.5 focus:outline-none focus:border-blue-500"
+                                autoFocus
+                            />
+                            <button
+                                onClick={handleAddCategory}
+                                className="text-blue-500 hover:text-blue-400 text-xs font-bold"
+                            >
+                                Add
+                            </button>
+                            <button
+                                onClick={() => { setShowAddCatInput(false); setNewCatName(''); }}
+                                className="text-gray-500 hover:text-gray-300 text-xs"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    ) : (
+                        <button
+                            onClick={() => setShowAddCatInput(true)}
+                            className="flex items-center gap-2 text-gray-600 hover:text-blue-500 text-xs font-bold uppercase tracking-wider transition-colors w-full justify-center py-2 border border-dashed border-gray-700 rounded hover:border-blue-500"
+                        >
+                            <FolderPlus size={14} /> Add Category
+                        </button>
+                    )}
+                </div>
             </div>
         </div>
     );

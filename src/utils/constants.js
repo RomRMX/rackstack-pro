@@ -153,4 +153,25 @@ export const INITIAL_LIBRARY = [
         }
     },
     { type: 'spacer_2u', name: 'Solid Blank (2U)', uHeight: 2, width: 1, category: 'accessory', inputs: [], outputs: [], style: { background: '#262626' } },
+    { type: 'spacer_half_1u', name: 'Half-Rack Spacer (1U)', uHeight: 1, width: 0.5, category: 'accessory', inputs: [], outputs: [], style: { background: '#262626', border: '1px solid #333' } },
+    // --- GEAR: Media Servers ---
+    {
+        type: 'kaleidescape_strato', name: 'Kaleidescape Strato V', uHeight: 1, width: 0.5, category: 'gear', subcat: 'Video',
+        style: USW_STYLE,
+        images: {},
+        inputs: [], outputs: []
+    },
+    {
+        type: 'kaleidescape_terra', name: 'Kaleidescape Terra Prime', uHeight: 1, width: 0.5, category: 'gear', subcat: 'Video',
+        style: USW_STYLE,
+        images: {},
+        inputs: [], outputs: []
+    },
+    // --- GEAR: Audio ---
+    {
+        type: 'shure_sldx4', name: 'Shure SLDX4 Mic Receiver', uHeight: 1, width: 0.5, category: 'gear', subcat: 'Source',
+        style: USW_STYLE,
+        images: {},
+        inputs: [], outputs: []
+    },
 ];
