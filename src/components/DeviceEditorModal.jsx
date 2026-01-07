@@ -139,7 +139,7 @@ const DeviceEditorModal = ({ device, isOpen, onClose, onSave }) => {
 
     return (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[3000] backdrop-blur-md">
-            <div className="bg-[#111] w-[1000px] h-[85vh] flex flex-col rounded-xl border border-[#333] shadow-2xl overflow-hidden">
+            <div className="bg-[#111] w-[1000px] h-[55vh] flex flex-col rounded-xl border border-[#333] shadow-2xl overflow-hidden">
                 <div className="p-4 border-b border-[#222] flex justify-between items-center bg-[#0a0a0a] shrink-0">
                     <h2 className="text-sm font-bold text-white flex items-center gap-2"><Settings size={16} className="text-blue-500" /> Editing: {data.name}</h2>
                     <div className="flex gap-2">
