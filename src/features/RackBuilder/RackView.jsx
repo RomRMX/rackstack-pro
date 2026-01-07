@@ -203,10 +203,6 @@ export default function RackView() {
                             </button>
                         </div>
                         <div className="h-6 w-px bg-[#333]"></div>
-                        <button onClick={addRack} className="flex items-center gap-2 px-3 py-1 bg-[#1a1a1a] hover:bg-[#222] text-blue-500 hover:text-blue-400 rounded-md text-xs font-black uppercase tracking-wider transition-colors border border-[#333] shadow-sm">
-                            <Plus size={14} /> Add Rack
-                        </button>
-                        <div className="h-6 w-px bg-[#333]"></div>
                         {hoveredInfo && (
                             <div className="flex items-center gap-2 text-blue-400 font-mono text-xs animate-in fade-in">
                                 <MousePointer2 size={14} /> {hoveredInfo}
@@ -246,7 +242,7 @@ export default function RackView() {
                                     </>
                                 )}
                                 <button onClick={handleDuplicateDevice} className="flex items-center gap-2 px-3 py-1.5 bg-[#222] hover:bg-[#333] text-gray-300 hover:text-white rounded text-xs font-bold uppercase"><Copy size={14} /> Duplicate</button>
-                                {selectedDeviceIds.length === 1 && (
+                                {selectedDeviceIds.length === 1 && (activeDevice.category !== 'accessory' && activeDevice.subcat !== 'accessory') && (
                                     <button onClick={() => setEditingDevice(activeDevice)} className="flex items-center gap-2 px-3 py-1.5 bg-[#222] hover:bg-[#333] text-gray-300 hover:text-white rounded text-xs font-bold uppercase"><Settings size={14} /> Edit</button>
                                 )}
                                 <button onClick={() => removeDevices(selectedDeviceIds)} className="flex items-center gap-2 px-3 py-1.5 bg-red-900/20 hover:bg-red-900/40 text-red-400 hover:text-red-300 rounded text-xs font-bold uppercase"><Trash2 size={14} /> Delete</button>
@@ -336,6 +332,13 @@ export default function RackView() {
                             </div>
                         </div>
                     ))}
+
+                    <div className="flex flex-col items-center justify-center min-w-[300px] h-full p-4 opacity-50 hover:opacity-100 transition-opacity">
+                        <button onClick={addRack} className="flex items-center gap-2 px-6 py-3 rounded-lg border-2 border-dashed border-gray-700 text-gray-500 hover:text-gray-300 hover:border-gray-500 hover:bg-[#1a1a1a] transition-all group">
+                            <Plus size={24} className="group-hover:scale-110 transition-transform" />
+                            <span className="font-bold uppercase tracking-widest text-sm">Add Rack</span>
+                        </button>
+                    </div>
 
                     <CableLayer connections={connections} viewMode={viewMode} onDeleteConn={(id) => setConnections(prev => prev.filter(c => c.id !== id))} rackWidth={RACK_WIDTH_PX} rackHeight={RACK_TOTAL_HEIGHT_PX} racks={racks} />
                 </div>

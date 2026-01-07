@@ -100,7 +100,7 @@ export default function LibraryPanel() {
                                         className="bg-[#1a1a1a] p-1 rounded border border-[#333] hover:bg-[#222] cursor-grab flex items-center gap-2 group transition-colors shadow-sm active:cursor-grabbing"
                                     >
                                         <div className="w-8 h-8 bg-black rounded flex items-center justify-center text-gray-500 font-bold text-[9px] border border-[#222]">
-                                            {t.width < 1 ? `${t.width}U` : `${t.uHeight}U`}
+                                            {t.width < 1 ? `${t.width.toString().replace(/^0+/, '')}U` : `${t.uHeight}U`}
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <div className="text-xs font-bold text-gray-300 truncate group-hover:text-white">{t.name}</div>

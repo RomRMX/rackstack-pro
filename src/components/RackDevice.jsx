@@ -27,7 +27,7 @@ const RackDevice = ({ device, viewMode, isSelected, onSelect, onPortClick, selec
         height: `${(device.uHeight || 1) * 100}%`,
         color: style.color || '#ccc',
         backgroundColor: isAccessory ? '#1a1a1a' : (style.background || '#333333'),
-        border: '1px solid #666', // Higher contrast outline
+        border: '1px solid #3b82f6', // User requested blue outline for default devices
         ...style
     };
 
