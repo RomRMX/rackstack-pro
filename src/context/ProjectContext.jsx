@@ -21,7 +21,15 @@ export const ProjectProvider = ({ children }) => {
     };
 
     // --- STATE ---
-    const [library, setLibrary] = useState(() => loadState('prb_library', INITIAL_LIBRARY));
+    // Library: Merge INITIAL_LIBRARY with saved data to ensure new default devices always appear
+    const [library, setLibrary] = useState(() => {
+        const saved = loadState('prb_library', []);
+        // Get types already in saved library
+        const savedTypes = new Set(saved.map(d => d.type));
+        // Add any new devices from INITIAL_LIBRARY that don't exist in saved
+        const newDefaults = INITIAL_LIBRARY.filter(d => !savedTypes.has(d.type));
+        return [...saved, ...newDefaults].length > 0 ? [...saved, ...newDefaults] : INITIAL_LIBRARY;
+    });
     const [racks, setRacks] = useState(() => loadState('prb_racks', [
         { id: 'rack-1', name: 'Rack 1', uHeight: 42, locked: false }
     ]));
